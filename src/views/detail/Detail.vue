@@ -13,6 +13,7 @@
        </scroll>
        <detail-bottom-bar @addCart="addToCart"/>
        <back-top @click.native="backClick1()" v-show="isShowBackTop" class="back1"></back-top>
+       <toast :message="message" :show="show"></toast>
       </div>
       
 </template>
@@ -28,7 +29,8 @@ import DetailParamInfo from './childsComps/DetailParamInfo.vue'
 import DetailCommentInfo from './childsComps/DetailCommentInfo.vue'
 import GoodsList from 'components/content/goods/GoodsList'
 import DetailBottomBar from './childsComps/DetailBottomBar.vue'
-import BackTop from "components/content/backTop/BackTop";
+import BackTop from "components/content/backTop/BackTop"
+import Toast from 'components/common/toast/Toast'
 import {getDetail,Goods,Shop,GoodsParam,getRecommend} from 'network/detail'
 export default {
     name:'Detail',
@@ -44,7 +46,9 @@ export default {
             recommend:[],
            themeTopYs:[],
            currentIndex:0,
-            isShowBackTop: true
+            isShowBackTop: true,
+            message:'',
+            show:false
         }
     },
     methods:{
@@ -58,7 +62,17 @@ export default {
             product.iid = this.iid
             console.log(product);
             //this.$store.commit('addCart',product)
-            this.$store.dispatch('addCart',product)
+            //商品添加到购物车
+            this.$store.dispatch('addCart',product).then(res=>{
+                this.show=true
+                this.message=res
+                console.log(res);
+                setTimeout(()=>{
+                    this.show=false
+                    this.message=''
+                },1500)
+            })
+            //添加到购物车成功//dispath返回一个Promise
         },
            backClick1() {
       this.$refs.scroll.scrollTo(0, 0);
@@ -104,7 +118,8 @@ export default {
            DetailCommentInfo,
            GoodsList,
            DetailBottomBar,
-           BackTop
+           BackTop,
+            Toast
     },
     
         

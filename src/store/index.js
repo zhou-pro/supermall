@@ -1,3 +1,4 @@
+
 import Vue from 'vue'
 import Vuex from 'vuex'
 //安装插件
@@ -22,7 +23,8 @@ Vue.use(Vuex)
     },
     actions:{
         addCart(context,payload){
-            //payload新添加的商品
+           return new Promise((resolve,reject) =>{
+                //payload新添加的商品
            /*let oldProduct = null;
            for(let item of state.cartList){
                if(item.iid === payload.iid){
@@ -34,11 +36,14 @@ Vue.use(Vuex)
            if(oldProduct){
               // oldProduct.count +=1
               context.commit('addCounter',oldProduct)
+              resolve('当前商品数量+1')
            }else{
                payload.count = 1
                //context.state.cartList.push(payload)
                context.commit('addToCart',payload)
+               resolve('添加了新的商品')
            }
+           })
 
         }
     }

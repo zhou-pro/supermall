@@ -1,7 +1,7 @@
 <template>
   <div class="button-bar">
-     <div class="check-content">
-          <check-button class="check-button" :is-checked="isSelectAll"></check-button>
+     <div class="check-content" @click="checkClick">
+          <check-button class="check-button" :checked="isSelectAll" ></check-button>
           <span>全选</span>
      </div>
      <div class="price">
@@ -19,6 +19,15 @@ export default {
 components:{
    CheckButton 
 },
+methods:{
+checkClick(){
+    if(this.isSelectAll){
+        this.$store.state.cartList.forEach(item => item.checked = false )
+    }else{
+      this.$store.state.cartList.forEach(item => item.checked = true )  
+    }
+}
+},
 computed:{
     totalPrice(){
         return this.$store.state.cartList.filter(item=>{
@@ -30,7 +39,7 @@ computed:{
     checkLength(){
         return this.$store.state.cartList.filter(item => item.checked).length
     },
-    isSlectAll(){
+    isSelectAll(){
         return (!this.$store.state.cartList.filter(item => !item.checked).length)
     }
 }
@@ -41,7 +50,7 @@ computed:{
 .button-bar{
     display: flex;
     height: 40PX;
-    background-color:#FF8198;
+    background-color:#ccc;
     position: relative;
     line-height: 40px;
     font-size: 14px;
